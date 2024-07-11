@@ -37,17 +37,17 @@ public class NpcEkspaApplication {
     private static int calculate(int[][] array) {
         int result = 0;
         for (int i = 1; i <= ATTEMPTS; i++) {
-            int[] maxPosition = getValuePosition(array, 0);
-            if (maxPosition == null) {
+            int[] initialPosition = getValuePosition(array, 0);
+            if (initialPosition == null) {
                 break;
             }
-            int valueToAdd = getValueFromArray(array, maxPosition);
+            int valueToAdd = takeValueFromArray(array, initialPosition);
             while (valueToAdd < LIMIT) {
                 int[] nextPosition = getValuePosition(array, valueToAdd);
                 if (nextPosition == null) {
                     break;
                 }
-                int nextValue = getValueFromArray(array, nextPosition);
+                int nextValue = takeValueFromArray(array, nextPosition);
                 valueToAdd += nextValue;
             }
             result += valueToAdd;
@@ -56,25 +56,25 @@ public class NpcEkspaApplication {
     }
 
     private static int[] getValuePosition(int[][] array, int currentValue) {
-        int[] minValueCell = null;
+        int[] cell = null;
         for (int i = array.length - 1; i >= 0; i--) {
-            if (minValueCell != null) {
+            if (cell != null) {
                 break;
             }
             for (int j = 0; j < array[0].length; j++) {
                 int cellValue = array[i][j];
                 if (i + 1 + currentValue <= LIMIT) {
                     if (cellValue != 0 && ((cellValue + currentValue) <= LIMIT)) {
-                        minValueCell = new int[]{i, j};
+                        cell = new int[]{i, j};
                         break;
                     }
                 } else break;
             }
         }
-        return minValueCell;
+        return cell;
     }
 
-    private static int getValueFromArray(int[][] array, int[] position) {
+    private static int takeValueFromArray(int[][] array, int[] position) {
         int i = position[0];
         int j = position[1];
         int value = array[i][j];
